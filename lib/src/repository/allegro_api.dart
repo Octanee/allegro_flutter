@@ -4,15 +4,15 @@ import 'package:http/http.dart' as http;
 
 import '../exceptions/allegro_api/allegro_api.dart';
 import '../utils/json_decoder.dart';
-import 'allegro_api_environment.dart';
+import '../models/allegro_api_environment.dart';
 
-class AllegroApi {
+class AllegroApiRepository {
   final AllegroApiEnvironment environment;
 
   final String _authDevice = '/auth/oauth/device';
   final String _authToken = '/auth/oauth/token';
 
-  AllegroApi({required this.environment});
+  AllegroApiRepository({this.environment = AllegroApiEnvironment.sandbox});
 
   Future<Map<String, dynamic>> appAuthorization({
     required String clientId,
@@ -47,7 +47,7 @@ class AllegroApi {
     }
   }
 
-  Future<Map<String, dynamic>> getAuthToken({
+  Future<Map<String, dynamic>?> getAuthToken({
     required String clientId,
     required String clientSecret,
     required String deviceCode,
@@ -65,20 +65,24 @@ class AllegroApi {
       'device_code': deviceCode,
     };
 
-    final uri = _getUri(endPoint: _authDevice, isApi: false, params: params);
+    final uri = _getUri(endPoint: _authToken, isApi: false, params: params);
     log(uri.toString());
     final response = await http.post(
       uri,
       headers: headers,
     );
 
+    printJson(response.body);
+    
     if (response.statusCode != 200) {
+      if (response.statusCode == 400) {
+        return null;
+      }
       throw AllegroApiException(
         message: response.body,
         code: response.statusCode,
       );
     } else {
-      printJson(response.body);
       return jsonDecode(response.body);
     }
   }

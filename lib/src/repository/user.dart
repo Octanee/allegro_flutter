@@ -29,11 +29,11 @@ class UserRepository {
 
   User get currentUser => _cache.read<User>(key: Cache.userKey) ?? User.empty;
 
-  Future<void> createUser() async {
+  Future<void> createUser({required User user}) async {
     return _firebaseFirestore
         .collection(_userCollectionPath)
-        .doc()
-        .set(User.empty.toMap());
+        .doc(_userId)
+        .set(user.toMap());
   }
 
   Future<void> updateUser({required User user}) async {

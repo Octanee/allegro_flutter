@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-import '../../register.dart';
+import '../../id_secret.dart';
 
 class ClientIdInput extends StatelessWidget {
   final EdgeInsets padding;
@@ -16,17 +16,17 @@ class ClientIdInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
-      child: BlocBuilder<RegisterCubit, RegisterState>(
+      child: BlocBuilder<IdSecretCubit, IdSecretState>(
         buildWhen: (previous, current) => previous.clientId != current.clientId,
         builder: (context, state) {
           return TextField(
-            key: const Key('register_clientIdInput'),
+            key: const Key('register_idSecretPage_clientIdInput'),
             onChanged: (clientId) =>
-                context.read<RegisterCubit>().clientIdChanged(value: clientId),
+                context.read<IdSecretCubit>().clientIdChanged(value: clientId),
             decoration: InputDecoration(
               labelText: 'Client Id',
               prefixIcon: const Icon(Icons.important_devices_rounded),
-              errorText: state.status.isValidated ? state.errorMessage : '',
+              errorText: state.status.isValidated ? state.errorMessage : null,
             ),
           );
         },

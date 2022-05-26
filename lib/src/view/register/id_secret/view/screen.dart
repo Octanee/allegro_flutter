@@ -1,20 +1,17 @@
-import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 import '../../../../extensions/extension.dart';
 import '../../register.dart';
-import '../widgets/widgets.dart';
+import 'widgets/widgets.dart';
 
-class ClientIdSecretPage extends StatelessWidget {
-  const ClientIdSecretPage({Key? key}) : super(key: key);
-
-  static Page page() => const MaterialPage<void>(child: ClientIdSecretPage());
+class IdSecretScreen extends StatelessWidget {
+  const IdSecretScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RegisterCubit, RegisterState>(
+    return BlocListener<IdSecretCubit, IdSecretState>(
       listener: (context, state) {
         if (state.status.isSubmissionFailure) {
           ScaffoldMessenger.of(context)
@@ -25,9 +22,14 @@ class ClientIdSecretPage extends StatelessWidget {
               ),
             );
         } else if (state.status.isSubmissionSuccess) {
-          context
-              .flow<RegisterStatus>()
-              .update((state) => RegisterStatus.token);
+          Navigator.of(context).push(
+            UserCodePage.route(
+              clientId: state.clientId.value,
+              clientSecret: state.clientSecret.value,
+              deviceCode: state.deviceCode!,
+              userCode: state.userCode!,
+            ),
+          );
         }
       },
       child: Scaffold(
@@ -45,11 +47,11 @@ class ClientIdSecretPage extends StatelessWidget {
                     EdgeInsets.symmetric(horizontal: context.paddingXLarge),
               ),
               const SizedBox(height: 50),
-              NextButton(
+              AuthotrizeButton(
                 padding:
                     EdgeInsets.symmetric(horizontal: context.paddingXLarge),
                 onPressed: () async {
-                  await context.read<RegisterCubit>().authorize();
+                  await context.read<IdSecretCubit>().authorize();
                 },
               ),
             ],

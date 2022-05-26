@@ -36,6 +36,9 @@ extension TextStyleExtension on BuildContext {
   TextStyle? get titleMedium => textTheme.titleMedium?.copyWith(
         color: colors.onSurface,
       );
+  TextStyle? get titleMediumPrimary => textTheme.titleMedium?.copyWith(
+        color: colors.primary,
+      );
   TextStyle? get titleSmall => textTheme.titleSmall?.copyWith(
         color: colors.onSurface,
       );
