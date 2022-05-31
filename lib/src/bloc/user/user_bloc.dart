@@ -16,6 +16,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc({required UserRepository userRepository})
       : _userRepository = userRepository,
         super(const UserState.loading()) {
+          
     _userSubsription =
         _userRepository.user.listen((user) => add(UserChanged(user: user)));
 

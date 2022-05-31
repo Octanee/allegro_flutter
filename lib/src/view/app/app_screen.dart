@@ -13,8 +13,10 @@ class DecorAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: AppTheme()
-          .theme(seedColor: Colors.brown, brightness: Brightness.light),
+      theme: AppTheme().theme(
+        seedColor: Colors.brown,
+        brightness: Brightness.light,
+      ),
       home: FlowBuilder<AuthStatus>(
         state: context.select((AuthBloc bloc) => bloc.state.status),
         onGeneratePages: onGenerateAuthFlow,

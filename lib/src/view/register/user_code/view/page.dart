@@ -41,7 +41,7 @@ class UserCodePage extends StatelessWidget {
         clientId: clientId,
         clientSecret: clientSecret,
         deviceCode: deviceCode,
-        allegroApiRepository: AllegroApiRepository(),
+        allegroApiRepository: AllegroAuthorizationRepository(),
         userRepository: context.read<UserRepository>(),
       )..getAccessToken(),
       child: UserCodeScreen(userCode: userCode),

@@ -1,3 +1,4 @@
 export 'authentication.dart';
 export 'user.dart';
-export 'allegro_api.dart';
+export 'allegro/allegro_api.dart';
+export 'product.dart';

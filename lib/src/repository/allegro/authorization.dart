@@ -1,18 +1,8 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'package:http/http.dart' as http;
+part of 'allegro_api.dart';
 
-import '../exceptions/allegro_api/allegro_api.dart';
-import '../utils/json_decoder.dart';
-import '../models/allegro_api_environment.dart';
-
-class AllegroApiRepository {
-  final AllegroApiEnvironment environment;
-
+class AllegroAuthorizationRepository extends AllegroApi {
   final String _authDevice = '/auth/oauth/device';
   final String _authToken = '/auth/oauth/token';
-
-  AllegroApiRepository({this.environment = AllegroApiEnvironment.sandbox});
 
   Future<Map<String, dynamic>> appAuthorization({
     required String clientId,
@@ -28,8 +18,8 @@ class AllegroApiRepository {
 
     final body = 'client_id=$clientId';
 
-    final uri = _getUri(endPoint: _authDevice, isApi: false);
-    log(uri.toString());
+    final uri = getUri(endPoint: _authDevice, isApi: false);
+
     final response = await http.post(
       uri,
       headers: headers,
@@ -65,15 +55,13 @@ class AllegroApiRepository {
       'device_code': deviceCode,
     };
 
-    final uri = _getUri(endPoint: _authToken, isApi: false, params: params);
-    log(uri.toString());
+    final uri = getUri(endPoint: _authToken, isApi: false, params: params);
+
     final response = await http.post(
       uri,
       headers: headers,
     );
 
-    printJson(response.body);
-    
     if (response.statusCode != 200) {
       if (response.statusCode == 400) {
         return null;
@@ -87,21 +75,36 @@ class AllegroApiRepository {
     }
   }
 
-  Uri _getUri({
-    required String endPoint,
-    bool isApi = true,
-    Map<String, dynamic>? params,
-  }) {
-    String? query;
-    if (params != null) {
-      query = params.entries.map((e) => '${e.key}=${e.value}').join('&');
+  Future<Map<String, dynamic>?> refreshToken({
+    required String clientId,
+    required String clientSecret,
+    required String refreshToken,
+  }) async {
+    final basicAuth =
+        'Basic ${base64Encode(utf8.encode('$clientId:$clientSecret'))}';
+    final headers = {
+      'Authorization': basicAuth,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    };
+    final params = {
+      'grant_type': 'refresh_token',
+      'refresh_token': refreshToken,
+    };
+
+    final uri = getUri(endPoint: _authToken, isApi: false, params: params);
+
+    final response = await http.post(
+      uri,
+      headers: headers,
+    );
+
+    if (response.statusCode != 200) {
+      throw AllegroApiException(
+        message: response.body,
+        code: response.statusCode,
+      );
+    } else {
+      return jsonDecode(response.body);
     }
-
-    final path = StringBuffer('https://');
-    if (isApi) path.write('api.');
-    path.write('${environment.path}$endPoint');
-    if (query != null) path.write('?$query');
-
-    return Uri.parse(path.toString());
   }
 }

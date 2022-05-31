@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +8,7 @@ import '../../../../repository/repository.dart';
 part 'user_code_state.dart';
 
 class UserCodeCubit extends Cubit<UserCodeState> {
-  final AllegroApiRepository _allegroApiRepository;
+  final AllegroAuthorizationRepository _allegroApiRepository;
   final UserRepository _userRepository;
   final String clientId;
   final String clientSecret;
@@ -20,7 +18,7 @@ class UserCodeCubit extends Cubit<UserCodeState> {
     required this.clientId,
     required this.clientSecret,
     required this.deviceCode,
-    required AllegroApiRepository allegroApiRepository,
+    required AllegroAuthorizationRepository allegroApiRepository,
     required UserRepository userRepository,
   })  : _allegroApiRepository = allegroApiRepository,
         _userRepository = userRepository,
@@ -28,7 +26,6 @@ class UserCodeCubit extends Cubit<UserCodeState> {
 
   Future<void> getAccessToken() async {
     try {
-      log('getAccessToken');
       emit(state.copyWith(status: UserCodeStatus.waiting));
       Future.doWhile(_getToken);
       emit(
@@ -47,8 +44,8 @@ class UserCodeCubit extends Cubit<UserCodeState> {
   }
 
   Future<bool> _getToken() async {
-    log('_getToken');
     await Future.delayed(const Duration(seconds: 5));
+
     final data = await _allegroApiRepository.getAuthToken(
       clientId: clientId,
       clientSecret: clientSecret,
@@ -59,6 +56,7 @@ class UserCodeCubit extends Cubit<UserCodeState> {
       await _createUser(
         accessToken: data['access_token'],
         refreshToken: data['refresh_token'],
+        expiresIn: data['expires_in'],
       );
       return false;
     }
@@ -68,20 +66,23 @@ class UserCodeCubit extends Cubit<UserCodeState> {
   Future<void> _createUser({
     required String accessToken,
     required String refreshToken,
+    required int expiresIn,
   }) async {
-    log('_createUser');
     emit(
       state.copyWith(
         status: UserCodeStatus.createUser,
       ),
     );
+
     final user = User(
       isNew: false,
       clientId: clientId,
       clientSecret: clientSecret,
       accessToken: accessToken,
       refreshToken: refreshToken,
+      refreshTokenDate: User.calculatetRefreshTokenDate(expiresIn: expiresIn),
     );
+    
     await _userRepository.createUser(user: user);
   }
 }

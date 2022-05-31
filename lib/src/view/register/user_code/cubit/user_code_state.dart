@@ -24,7 +24,13 @@ class UserCodeState extends Equatable {
   });
 
   @override
-  List<Object?> get props => [accessToken, refreshToken, expiresIn];
+  List<Object?> get props => [
+        status,
+        accessToken,
+        refreshToken,
+        expiresIn,
+        errorMessage,
+      ];
 
   UserCodeState copyWith({
     UserCodeStatus? status,

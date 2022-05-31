@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../bloc/bloc.dart';
-import '../view/auth/auth.dart';
-import '../view/home/home.dart';
-import '../view/loading/loading.dart';
-import '../view/register/register.dart';
+import '../view/view.dart';
 
 List<Page> onGenerateAuthFlow(
   AuthStatus status,
@@ -18,7 +15,7 @@ List<Page> onGenerateAuthFlow(
   }
 }
 
-List<Page> onGenerateNewUserFlow(
+List<Page> onGenerateUserFlow(
   bool isNew,
   List<Page<dynamic>> pages,
 ) {

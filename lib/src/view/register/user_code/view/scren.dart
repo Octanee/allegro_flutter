@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,7 +14,8 @@ class UserCodeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<UserCodeCubit, UserCodeState>(
       listener: (context, state) {
-        if(state.status == UserCodeStatus.complete){
+        log('UserCodeScreen status: ${state.status}');
+        if (state.status == UserCodeStatus.complete) {
           Navigator.of(context).pop();
         }
       },

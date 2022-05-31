@@ -17,7 +17,11 @@ class LoginButton extends StatelessWidget {
         return state.status.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : ElevatedButton(
-                onPressed: state.status.isValidated ? onPressed : null,
+                onPressed: state.status.isValidated
+                    ? () {
+                        context.read<LoginCubit>().logIn();
+                      }
+                    : null,
                 child: Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: context.paddingLarge),
@@ -31,6 +35,4 @@ class LoginButton extends StatelessWidget {
       },
     );
   }
-
-  void onPressed() {}
 }

@@ -10,9 +10,9 @@ import '../../../../utils/json_decoder.dart';
 part 'id_secret_state.dart';
 
 class IdSecretCubit extends Cubit<IdSecretState> {
-  final AllegroApiRepository _allegroApi;
+  final AllegroAuthorizationRepository _allegroApi;
 
-  IdSecretCubit({required AllegroApiRepository allegroApi})
+  IdSecretCubit({required AllegroAuthorizationRepository allegroApi})
       : _allegroApi = allegroApi,
         super(const IdSecretState());
 

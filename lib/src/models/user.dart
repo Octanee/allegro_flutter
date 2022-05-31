@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class User {
   final bool isNew;
   final String? companyName;
@@ -5,6 +7,7 @@ class User {
   final String? clientSecret;
   final String? accessToken;
   final String? refreshToken;
+  final DateTime? refreshTokenDate;
 
   const User({
     required this.isNew,
@@ -13,9 +16,18 @@ class User {
     this.clientSecret,
     this.accessToken,
     this.refreshToken,
+    this.refreshTokenDate,
   });
 
   static const empty = User(isNew: true);
+
+  static DateTime calculatetRefreshTokenDate({required int expiresIn}) {
+    final refreshTokenDate =
+        DateTime.now().add(Duration(seconds: (expiresIn * 0.9).toInt()));
+    return refreshTokenDate;
+  }
+
+  bool get needToRefresh => refreshTokenDate?.isBefore(DateTime.now()) ?? true;
 
   User copyWith({
     bool? isNew,
@@ -25,6 +37,7 @@ class User {
     String? deviceCode,
     String? accessToken,
     String? refreshToken,
+    DateTime? refreshTokenDate,
   }) {
     return User(
       isNew: isNew ?? this.isNew,
@@ -33,6 +46,7 @@ class User {
       clientSecret: clientSecret ?? this.clientSecret,
       accessToken: accessToken ?? this.accessToken,
       refreshToken: refreshToken ?? this.refreshToken,
+      refreshTokenDate: refreshTokenDate ?? this.refreshTokenDate,
     );
   }
 
@@ -44,6 +58,9 @@ class User {
       'clientSecret': clientSecret,
       'accessToken': accessToken,
       'refreshToken': refreshToken,
+      'refreshTokenDate': refreshTokenDate != null
+          ? Timestamp.fromDate(refreshTokenDate!)
+          : null,
     };
   }
 
@@ -55,11 +72,16 @@ class User {
       clientSecret: map?['clientSecret'],
       accessToken: map?['accessToken'],
       refreshToken: map?['refreshToken'],
+      refreshTokenDate: (map?['refreshTokenDate'] as Timestamp).toDate(),
     );
   }
 
   @override
   String toString() {
     return 'User(isNew: $isNew)';
+  }
+
+  String toFullString() {
+    return 'User(isNew: $isNew, companyName: $companyName, clientId: $clientId, clientSecret: $clientSecret, accessToken: $accessToken, refreshToken: $refreshToken, refreshTokenDate: $refreshTokenDate)';
   }
 }
