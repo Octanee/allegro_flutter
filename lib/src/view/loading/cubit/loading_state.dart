@@ -1,10 +1,9 @@
 part of 'loading_cubit.dart';
 
 enum LoadingStatus {
-  loading,
-  loaded,
+  token,
+  synchronization,
   complete,
-  error,
 }
 
 class LoadingState extends Equatable {
@@ -12,12 +11,12 @@ class LoadingState extends Equatable {
   final String? errorMessage;
 
   const LoadingState({
-    this.status = LoadingStatus.loading,
+    this.status = LoadingStatus.token,
     this.errorMessage,
   });
 
   @override
-  List<Object?> get props => [status, errorMessage];
+  List<Object> get props => [status];
 
   LoadingState copyWith({
     LoadingStatus? status,

@@ -75,7 +75,7 @@ class AllegroAuthorizationRepository extends AllegroApi {
     }
   }
 
-  Future<Map<String, dynamic>?> refreshToken({
+  Future<Map<String, dynamic>> refreshToken({
     required String clientId,
     required String clientSecret,
     required String refreshToken,
