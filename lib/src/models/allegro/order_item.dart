@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-class OrderItem {
+class AllegroOrderItem {
   final String id;
   final String offerId;
   final String name;
   final int quantity;
   final double price;
   
-  OrderItem({
+  AllegroOrderItem({
     required this.id,
     required this.offerId,
     required this.name,
@@ -15,14 +15,14 @@ class OrderItem {
     required this.price,
   });
 
-  OrderItem copyWith({
+  AllegroOrderItem copyWith({
     String? id,
     String? offerId,
     String? name,
     int? quantity,
     double? price,
   }) {
-    return OrderItem(
+    return AllegroOrderItem(
       id: id ?? this.id,
       offerId: offerId ?? this.offerId,
       name: name ?? this.name,
@@ -41,8 +41,8 @@ class OrderItem {
     };
   }
 
-  factory OrderItem.fromMap(Map<String, dynamic> map) {
-    return OrderItem(
+  factory AllegroOrderItem.fromMap(Map<String, dynamic> map) {
+    return AllegroOrderItem(
       id: map['id'],
       offerId: map['offer']['id'],
       name: map['offer']['name'] ,
@@ -53,8 +53,8 @@ class OrderItem {
 
   String toJson() => json.encode(toMap());
 
-  factory OrderItem.fromJson(String source) =>
-      OrderItem.fromMap(json.decode(source));
+  factory AllegroOrderItem.fromJson(String source) =>
+      AllegroOrderItem.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -65,7 +65,7 @@ class OrderItem {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is OrderItem &&
+    return other is AllegroOrderItem &&
         other.id == id &&
         other.offerId == offerId &&
         other.name == name &&

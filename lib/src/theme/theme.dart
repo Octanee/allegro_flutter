@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   ThemeData theme({
@@ -30,6 +31,7 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: colors,
       appBarTheme: _appBarTheme(colors: colors),
+      iconTheme: _iconTheme(colors: colors),
     );
 
     return custom;
@@ -48,7 +50,12 @@ class AppTheme {
 
   AppBarTheme _appBarTheme({required ColorScheme colors}) {
     return AppBarTheme(
+      //backgroundColor: colors.primary,
       iconTheme: IconThemeData(color: colors.primary),
     );
+  }
+
+  IconThemeData _iconTheme({required ColorScheme colors}) {
+    return IconThemeData(color: colors.primary);
   }
 }

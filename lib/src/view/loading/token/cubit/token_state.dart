@@ -38,4 +38,9 @@ class TokenState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
+
+  @override
+  String toString() {
+    return '$runtimeType { status: $status }';
+  }
 }

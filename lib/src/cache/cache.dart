@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 class Cache {
   final Map<String, Object> _cache;
 
@@ -7,21 +9,18 @@ class Cache {
 
   Cache._() : _cache = <String, Object>{};
 
-  static const userIdKey = '___user_id_key___';
-  static const userKey = '___user_key___';
-  static const accessTokenKey = '___access_token_key___';
-  static const refreshTokenKey = '___refresh_token_key___';
-  static const clientIdKey = '___client_id_key___';
-  static const clientSecretKey = '___client_secret_key___';
-  static const deviceCodeKey = '___device_code_key___';
-
   void write<T extends Object>({required String key, required T value}) {
+    log('Cache -> write {key: $key, type: $T}');
     _cache[key] = value;
   }
 
   T? read<T extends Object>({required String key}) {
     final value = _cache[key];
-    if (value is T) return value;
+    if (value is T) {
+      log('Cache -> read {key: $key, type: $T}');
+      return value;
+    }
+    log('Cache -> read {Null on key: $key}');
     return null;
   }
 }

@@ -39,6 +39,19 @@ class Product {
     );
   }
 
+  Map<String, dynamic> toAllegro() {
+    return {
+      'sellingMode': {
+        'price': {
+          'amount': allegroPrice.toString(),
+        }
+      },
+      'stock': {
+        'available': quantity,
+      }
+    };
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -56,10 +69,10 @@ class Product {
       id: map['id'],
       allegroId: map['allegroId'],
       name: map['name'],
-      purchasePrice: map['purchasePrice'],
-      allegroPrice: map['allegroPrice'],
-      quantity: map['quantity'],
       imageUrl: map['imageUrl'],
+      purchasePrice: map['purchasePrice']?.toDouble(),
+      allegroPrice: map['allegroPrice'].toDouble(),
+      quantity: map['quantity'].toInt(),
     );
   }
 

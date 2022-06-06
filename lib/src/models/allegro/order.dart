@@ -8,8 +8,8 @@ import 'allegro_models.dart';
 class AllegroOrder {
   final String id;
   final DateTime occurredAt;
-  final String type;
-  final List<OrderItem> items;
+  final AllegroOrderType type;
+  final List<AllegroOrderItem> items;
 
   AllegroOrder({
     required this.id,
@@ -29,8 +29,8 @@ class AllegroOrder {
   AllegroOrder copyWith({
     String? id,
     DateTime? occurredAt,
-    String? type,
-    List<OrderItem>? items,
+    AllegroOrderType? type,
+    List<AllegroOrderItem>? items,
   }) {
     return AllegroOrder(
       id: id ?? this.id,
@@ -44,7 +44,7 @@ class AllegroOrder {
     return {
       'id': id,
       'occurredAt': Timestamp.fromDate(occurredAt),
-      'type': type,
+      'type': type.name,
       'items': items.map((x) => x.toMap()).toList(),
     };
   }
@@ -53,9 +53,11 @@ class AllegroOrder {
     return AllegroOrder(
       id: map['id'] ?? '',
       occurredAt: DateTime.parse(map['occurredAt']),
-      type: map['type'] ?? '',
-      items: List<OrderItem>.from(
-        map['order']['lineItems']?.map((x) => OrderItem.fromMap(x)),
+      type: AllegroOrderType.values.firstWhere(
+        (element) => element.name == map['sellingMode']['format'],
+      ),
+      items: List<AllegroOrderItem>.from(
+        map['order']['lineItems']?.map((x) => AllegroOrderItem.fromMap(x)),
       ),
     );
   }
@@ -84,5 +86,32 @@ class AllegroOrder {
   @override
   int get hashCode {
     return id.hashCode ^ occurredAt.hashCode ^ type.hashCode ^ items.hashCode;
+  }
+}
+
+enum AllegroOrderType {
+  bought,
+  filledIn,
+  readyForProcessing,
+  buyerCancelled,
+  fulFillmentStatusChanged,
+  autoCancelled;
+
+  @override
+  String toString() {
+    switch (this) {
+      case AllegroOrderType.bought:
+        return 'BOUGHT';
+      case AllegroOrderType.filledIn:
+        return 'FILLED_IN';
+      case AllegroOrderType.readyForProcessing:
+        return 'READY_FOR_PROCESSING';
+      case AllegroOrderType.buyerCancelled:
+        return 'BUYER_CANCELLED';
+      case AllegroOrderType.fulFillmentStatusChanged:
+        return 'FULFILLMENT_STATUS_CHANGED';
+      case AllegroOrderType.autoCancelled:
+        return 'AUTO_CANCELLED';
+    }
   }
 }

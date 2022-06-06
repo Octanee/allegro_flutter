@@ -50,4 +50,9 @@ class SynchronizationState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
+
+  @override
+  String toString() {
+    return '$runtimeType { status: $status, offer: #${offers.length}, products: #${products.length}, updateNeeded: #${updateNeeded.length} }';
+  }
 }

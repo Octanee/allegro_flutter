@@ -69,4 +69,34 @@ class AllegroOfferRepository extends AllegroApi {
       return value;
     }
   }
+
+  Future<void> updateOffer({
+    required String id,
+    required Map<String, dynamic> data,
+  }) async {
+    final auth = 'Bearer $accessToken';
+
+    final headers = {
+      'Authorization': auth,
+      'Content-Type': 'application/vnd.allegro.public.v1+json',
+      'Accept': 'application/vnd.allegro.public.v1+json'
+    };
+
+    final body = jsonEncode(data);
+
+    final uri = getUri(endPoint: '/sale/product-offers/$id');
+
+    final response = await http.patch(
+      uri,
+      headers: headers,
+      body: body,
+    );
+
+    if (response.statusCode != 200) {
+      throw AllegroApiException(
+        message: response.body,
+        code: response.statusCode,
+      );
+    }
+  }
 }

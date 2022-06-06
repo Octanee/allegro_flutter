@@ -11,15 +11,17 @@ class AuthenticationRepository {
       : _firebaseAuth = FirebaseAuth.instance,
         _cache = Cache();
 
+  static const userIdKey = '___user_id_key___';
+
   Stream<String> get userId {
     return _firebaseAuth.authStateChanges().map((user) {
       final userId = user?.uid ?? '';
-      _cache.write(key: Cache.userIdKey, value: userId);
+      _cache.write(key: userIdKey, value: userId);
       return userId;
     });
   }
 
-  String get currentUserId => _cache.read<String>(key: Cache.userIdKey) ?? '';
+  String get currentUserId => _cache.read<String>(key: userIdKey) ?? '';
 
   Future<void> signUp({required String email, required String password}) async {
     try {

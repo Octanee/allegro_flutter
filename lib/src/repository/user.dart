@@ -14,6 +14,7 @@ class UserRepository {
         _firebaseFirestore = FirebaseFirestore.instance;
 
   static const _userCollectionPath = 'user';
+  static const userKey = '___user_key___';
 
   Stream<User> get user {
     return _firebaseFirestore
@@ -22,12 +23,12 @@ class UserRepository {
         .snapshots()
         .map((snap) {
       final user = User.fromMap(snap.data());
-      _cache.write(key: Cache.userKey, value: user);
+      _cache.write(key: userKey, value: user);
       return user;
     });
   }
 
-  User get currentUser => _cache.read<User>(key: Cache.userKey) ?? User.empty;
+  User get currentUser => _cache.read<User>(key: userKey) ?? User.empty;
 
   Future<void> createUser({required User user}) async {
     return _firebaseFirestore

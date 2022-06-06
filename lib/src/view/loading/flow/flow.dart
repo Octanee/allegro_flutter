@@ -1,7 +1,7 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
-import '../../home/home.dart';
+import '../../home/flow/flow.dart';
 import '../loading.dart';
 
 class LoadingFlow extends StatelessWidget {
@@ -27,7 +27,7 @@ class LoadingFlow extends StatelessWidget {
       case LoadingStatus.synchronization:
         return [SynchronizationPage.page()];
       case LoadingStatus.complete:
-        return [HomePage.page()];
+        return [HomeFlow.page()];
     }
   }
 }

@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../extensions/extension.dart';
 import '../../loading.dart';
-import '../cubit/synchronization_cubit.dart';
 
 class SynchronizationScreen extends StatelessWidget {
   const SynchronizationScreen({Key? key}) : super(key: key);
