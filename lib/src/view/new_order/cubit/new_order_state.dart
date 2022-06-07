@@ -39,4 +39,30 @@ class NewOrderState extends Equatable {
         address,
         formzStatus,
       ];
+
+  NewOrderState copyWith({
+    List<OrderItem>? items,
+    OrderDeliverer? deliverer,
+    OrderStatus? status,
+    OrderPlatform? platform,
+    TextInput? name,
+    Email? email,
+    Phone? phone,
+    TextInput? address,
+    FormzStatus? formzStatus,
+    String? errorMessage,
+  }) {
+    return NewOrderState(
+      items: items ?? this.items,
+      deliverer: deliverer ?? this.deliverer,
+      status: status ?? this.status,
+      platform: platform ?? this.platform,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+      formzStatus: formzStatus ?? this.formzStatus,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }

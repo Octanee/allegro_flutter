@@ -1,6 +1,7 @@
 import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 
+import '../../../widgets/widgets.dart';
 import '../../loading/loading.dart';
 import '../home.dart';
 
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
+            RowButton(
               onPressed: () {
                 context
                     .flow<HomeStatus>()
@@ -26,13 +27,13 @@ class HomePage extends StatelessWidget {
               },
               child: const Text('Products'),
             ),
-            ElevatedButton(
+            RowButton(
               onPressed: () {
                 context.flow<HomeStatus>().update((state) => HomeStatus.orders);
               },
               child: const Text('Orders'),
             ),
-            ElevatedButton(
+            RowButton(
               onPressed: () {
                 context
                     .flow<HomeStatus>()
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
               },
               child: const Text('New Order'),
             ),
-            ElevatedButton(
+            RowButton(
               onPressed: () {
                 context
                     .flow<LoadingStatus>()

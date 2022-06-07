@@ -11,5 +11,9 @@ part 'new_order_state.dart';
 class NewOrderCubit extends Cubit<NewOrderState> {
   NewOrderCubit() : super(const NewOrderState());
 
-
+  void addItem({required OrderItem item}) {
+    final list = List<OrderItem>.from(state.items);
+    list.add(item);
+    emit(state.copyWith(items: list));
+  }
 }

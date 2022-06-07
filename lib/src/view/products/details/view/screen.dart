@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../extensions/extension.dart';
 import '../../../../models/models.dart';
 import '../../products.dart';
-import 'widget/widget.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({Key? key}) : super(key: key);
@@ -22,7 +21,16 @@ class ProductDetailsScreen extends StatelessWidget {
             return true;
           },
           child: Scaffold(
-            floatingActionButton: const AddToOrderFab(),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                context.showBottomSheet(
+                  builder: (context) => AddToOrder(
+                    product: state.product,
+                  ),
+                );
+              },
+              child: const Icon(Icons.shopping_bag_rounded),
+            ),
             appBar: AppBar(
               title: BlocBuilder<DetailsCubit, DetailsState>(
                 builder: (context, state) {
