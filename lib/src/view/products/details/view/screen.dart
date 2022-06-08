@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../extensions/extension.dart';
 import '../../../../models/models.dart';
+import '../../../bottom_sheets/bottom_sheets.dart';
+import '../../../new_order/new_order.dart';
 import '../../products.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
@@ -22,12 +24,24 @@ class ProductDetailsScreen extends StatelessWidget {
           },
           child: Scaffold(
             floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                context.showBottomSheet(
-                  builder: (context) => AddToOrder(
-                    product: state.product,
+              onPressed: () async {
+                final item = await context.showBottomSheet<OrderItem>(
+                  builder: (context) => OrderItemDataBottomSheet(
+                    item: OrderItem(
+                      productId: state.product.id,
+                      productImage: state.product.imageUrl,
+                      productName: state.product.name,
+                      quantity: 1,
+                      maxQuantity: state.product.quantity,
+                      price: state.product.allegroPrice,
+                    ),
                   ),
                 );
+
+                if (item != null) {
+                  // ignore: use_build_context_synchronously
+                  context.read<NewOrderCubit>().addItem(item: item);
+                }
               },
               child: const Icon(Icons.shopping_bag_rounded),
             ),

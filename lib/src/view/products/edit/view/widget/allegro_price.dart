@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../extensions/extension.dart';
+import '../../../../../widgets/widgets.dart';
 import '../../edit.dart';
 
 class EditAllegroPrice extends StatelessWidget {
@@ -13,79 +14,36 @@ class EditAllegroPrice extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.allegroPrice != current.allegroPrice,
       builder: (context, state) {
-        return Card(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(8),
-            onTap: () async {
-              final controller = TextEditingController(
-                text: state.allegroPrice.value.toString(),
-              );
-
-              final value = await showDialog<double>(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: const Text('Edit allegro Price'),
-                  content: TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.number,
-                  ),
-                  actions: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context, null);
-                      },
-                      child: const Text('CANCEL'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        final text = controller.text;
-                        final value = text.isNotEmpty
-                            ? double.parse(text).toPrice()
-                            : null;
-                        Navigator.pop(context, value);
-                      },
-                      child: const Text('SAVE'),
-                    ),
-                  ],
-                ),
-              );
-
-              if (value != null) {
-                // ignore: use_build_context_synchronously
-                context.read<EditCubit>().allegroPriceChanged(value: value);
-              }
-            },
-            child: Padding(
-              padding: EdgeInsets.all(context.paddingMedium),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Allegro price',
-                        style: context.labelMedium,
-                      ),
-                      Text(
-                        '${state.allegroPrice.value.toPrice()} PLN',
-                        style: context.titleLargePrimary,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 16),
-                  Icon(
-                    Icons.edit,
-                    color: state.allegroPrice.valid == true
-                        ? context.colors.primary
-                        : context.colors.error,
-                  ),
-                ],
-              ),
-            ),
-          ),
+        return EditCard(
+          title: 'Allegro price',
+          value: '${state.allegroPrice.value.toPrice()} PLN',
+          isValid: state.allegroPrice.valid,
+          onTap: () async {
+            await showInputDialog(
+              context: context,
+              initValue: state.allegroPrice.value,
+            );
+          },
         );
       },
     );
+  }
+
+  Future<void> showInputDialog({
+    required BuildContext context,
+    required double initValue,
+  }) async {
+    final value = await showDialog<double>(
+      context: context,
+      builder: (context) => NumberInputDialog(
+        title: 'Allegro price',
+        initValue: initValue,
+      ),
+    );
+
+    if (value != null) {
+      // ignore: use_build_context_synchronously
+      context.read<EditCubit>().allegroPriceChanged(value: value);
+    }
   }
 }

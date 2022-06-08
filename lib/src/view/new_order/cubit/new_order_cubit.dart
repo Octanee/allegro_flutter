@@ -16,4 +16,15 @@ class NewOrderCubit extends Cubit<NewOrderState> {
     list.add(item);
     emit(state.copyWith(items: list));
   }
+
+  void updateItem({required OrderItem item}) {
+    final list = List<OrderItem>.from(state.items);
+    if (item.quantity == 0) {
+      list.removeWhere((element) => element.productId == item.productId);
+    } else {
+      list[list.indexWhere((element) => element.productId == item.productId)] =
+          item;
+    }
+    emit(state.copyWith(items: list));
+  }
 }

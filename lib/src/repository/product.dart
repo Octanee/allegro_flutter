@@ -58,4 +58,10 @@ class ProductRepository {
       log('Error => ProductRepository -> updateProduct {${e.toString()}}');
     }
   }
+
+  Future<Product> getProductOfId({required String id}) async {
+    final list = await products;
+    final product = list.firstWhere((element) => element.id == id);
+    return product;
+  }
 }

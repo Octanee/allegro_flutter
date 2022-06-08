@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../new_order/new_order.dart';
-import '../../new_order/view/page.dart';
 import '../../orders/list/view/page.dart';
 import '../../products/list/list.dart';
 import '../home.dart';

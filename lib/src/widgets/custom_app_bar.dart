@@ -12,12 +12,12 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        context.flow<HomeStatus>().update((state) => HomeStatus.products);
-        return true;
+        context.flow<HomeStatus>().update((state) => HomeStatus.home);
+        return false;
       },
       child: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.home_rounded),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () =>
               context.flow<HomeStatus>().update((state) => HomeStatus.home),
         ),

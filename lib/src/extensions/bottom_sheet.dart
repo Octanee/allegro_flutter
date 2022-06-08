@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 extension BottomSheetExtension on BuildContext {
-  void showBottomSheet({required Widget Function(BuildContext) builder}) =>
-      showModalBottomSheet(
+  Future<T?> showBottomSheet<T>({
+    required Widget Function(BuildContext) builder,
+  }) async =>
+      await showModalBottomSheet(
         isScrollControlled: true,
         context: this,
         builder: builder,

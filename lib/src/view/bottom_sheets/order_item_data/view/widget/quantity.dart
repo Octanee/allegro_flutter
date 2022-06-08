@@ -2,35 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../widgets/widgets.dart';
-import '../../edit.dart';
+import '../../order_item_data.dart';
 
-class EditQuantity extends StatelessWidget {
-  const EditQuantity({Key? key}) : super(key: key);
+class QuantityCard extends StatelessWidget {
+  const QuantityCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditCubit, EditState>(
+    return BlocBuilder<OrderItemDataCubit, OrderItemDataState>(
       buildWhen: (previous, current) => previous.quantity != current.quantity,
       builder: (context, state) {
         return AddSubtractCard(
-          title: 'Edit quantity',
+          title: 'Quantity',
           value: state.quantity.value,
-          maxValue: state.product.quantity,
+          maxValue: context.read<OrderItemDataCubit>().item.maxQuantity,
           onSubtract: () {
             context
-                .read<EditCubit>()
-                .quantityChanged(value: state.quantity.value - 1);
+                .read<OrderItemDataCubit>()
+                .quantityChanged(state.quantity.value - 1);
           },
           onAdd: () {
             context
-                .read<EditCubit>()
-                .quantityChanged(value: state.quantity.value + 1);
+                .read<OrderItemDataCubit>()
+                .quantityChanged(state.quantity.value + 1);
           },
           onTap: () async {
             await showInputDialog(
               context: context,
               initValue: state.quantity.value,
-              maxValue: state.product.quantity,
+              maxValue: context.read<OrderItemDataCubit>().item.maxQuantity,
             );
           },
         );
@@ -54,8 +54,8 @@ class EditQuantity extends StatelessWidget {
     if (value != null) {
       // ignore: use_build_context_synchronously
       context
-          .read<EditCubit>()
-          .quantityChanged(value: value.toInt().clamp(0, maxValue));
+          .read<OrderItemDataCubit>()
+          .quantityChanged(value.toInt().clamp(0, maxValue));
     }
   }
 }
