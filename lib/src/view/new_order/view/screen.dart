@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../widgets/widgets.dart';
+import 'widget/deliverer.dart';
 import 'widget/items_list_card.dart';
 
 class NewOrderScreen extends StatelessWidget {
@@ -12,7 +13,8 @@ class NewOrderScreen extends StatelessWidget {
       appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          children: const [
+            DelivererCard(),
             ItemsListCard(),
           ],
         ),

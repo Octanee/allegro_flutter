@@ -11,34 +11,27 @@ class ProductsListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        actions: [
-          BlocBuilder<ListCubit, ListState>(
-            builder: (context, state) {
-              return IconButton(
-                icon: const Icon(Icons.search_rounded),
-                onPressed: () {
-                  showSearch(
-                    context: context,
-                    delegate: ProductsListSearchDelegate(state.products),
-                  );
-                },
-              );
-            },
-          )
+      appBar: const CustomAppBar(),
+      body: Column(
+        children: [
+          const SearchBar(),
+          _getList(),
         ],
       ),
-      body: BlocBuilder<ListCubit, ListState>(
-        builder: (context, state) {
-          if (state.status == ListStatus.loaded) {
-            if (state.products.isEmpty) {
-              return _getEmptyList(context);
-            }
-            return ProductsList(products: state.products);
+    );
+  }
+
+  BlocBuilder<ListCubit, ListState> _getList() {
+    return BlocBuilder<ListCubit, ListState>(
+      builder: (context, state) {
+        if (state.status == ListStatus.loaded) {
+          if (state.products.isEmpty) {
+            return _getEmptyList(context);
           }
-          return _getLoadingWidget(context);
-        },
-      ),
+          return ProductsList(products: state.displayList);
+        }
+        return _getLoadingWidget(context);
+      },
     );
   }
 

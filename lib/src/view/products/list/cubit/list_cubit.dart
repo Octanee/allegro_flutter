@@ -19,7 +19,13 @@ class ListCubit extends Cubit<ListState> {
 
       final list = await _productRepository.products;
 
-      emit(state.copyWith(status: ListStatus.loaded, products: list));
+      emit(
+        state.copyWith(
+          status: ListStatus.loaded,
+          products: list,
+          displayList: list,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
@@ -28,5 +34,20 @@ class ListCubit extends Cubit<ListState> {
         ),
       );
     }
+  }
+
+  Future<void> query({String query = ''}) async {
+    emit(state.copyWith(status: ListStatus.query, query: query));
+
+    final list = state.products
+        .where(
+          (product) =>
+              product.id.toLowerCase().contains(query.toLowerCase()) ||
+              product.name.toLowerCase().contains(query.toLowerCase()) ||
+              product.allegroId.toLowerCase().contains(query.toLowerCase()),
+        )
+        .toList();
+
+    emit(state.copyWith(status: ListStatus.loaded, displayList: list));
   }
 }

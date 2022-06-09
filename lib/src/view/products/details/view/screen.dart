@@ -39,8 +39,10 @@ class ProductDetailsScreen extends StatelessWidget {
                 );
 
                 if (item != null) {
-                  // ignore: use_build_context_synchronously
-                  context.read<NewOrderCubit>().addItem(item: item);
+                  if (item.quantity != 0) {
+                    // ignore: use_build_context_synchronously
+                    context.read<NewOrderCubit>().addItem(item: item);
+                  }
                 }
               },
               child: const Icon(Icons.shopping_bag_rounded),

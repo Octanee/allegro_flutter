@@ -10,12 +10,15 @@ class ProductsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return ProductItem(product: product);
-      },
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return ProductItem(product: product);
+        },
+      ),
     );
   }
 }

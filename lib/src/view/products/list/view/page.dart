@@ -11,6 +11,7 @@ class ProductsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
     return BlocProvider(
       create: (context) => ListCubit(
         productRepository: ProductRepository(

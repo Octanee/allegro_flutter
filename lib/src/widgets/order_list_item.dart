@@ -100,6 +100,7 @@ class OrderListItem extends StatelessWidget {
       builder: (context) => const CustomDialog(
         title: 'Delete?',
         text: 'Do you want delete item from order?',
+        acceptButtonText: 'DELETE',
       ),
     );
 

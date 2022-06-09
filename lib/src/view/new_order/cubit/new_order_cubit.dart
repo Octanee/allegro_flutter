@@ -27,4 +27,8 @@ class NewOrderCubit extends Cubit<NewOrderState> {
     }
     emit(state.copyWith(items: list));
   }
+
+  void delivererChange(OrderDeliverer deliverer) {
+    emit(state.copyWith(deliverer: deliverer));
+  }
 }
