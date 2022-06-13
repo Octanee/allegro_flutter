@@ -2,6 +2,7 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../repository/repository.dart';
 import '../../new_order/new_order.dart';
 import '../../orders/list/view/page.dart';
 import '../../products/list/list.dart';
@@ -12,7 +13,18 @@ class HomeFlow extends StatelessWidget {
 
   static Page page() => MaterialPage(
         child: BlocProvider(
-          create: (context) => NewOrderCubit(),
+          create: (context) => NewOrderCubit(
+            allegroOfferRepository: AllegroOfferRepository(
+              accessToken:
+                  context.read<UserRepository>().currentUser.accessToken!,
+            ),
+            productRepository: ProductRepository(
+              userId: context.read<AuthenticationRepository>().currentUserId,
+            ),
+            ordersRepository: OrdersRepository(
+              userId: context.read<AuthenticationRepository>().currentUserId,
+            ),
+          ),
           child: const HomeFlow(),
         ),
       );

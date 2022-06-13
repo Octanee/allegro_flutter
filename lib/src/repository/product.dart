@@ -20,7 +20,7 @@ class ProductRepository {
 
   static const productsListKey = '___products_list_key___';
 
-  Future<List<Product>> getProducts() async {
+  Future<List<Product>> _getProducts() async {
     try {
       final snapshot = await _firebaseFirestore
           .collection(_productCollectionPath(userId: _userId))
@@ -38,9 +38,9 @@ class ProductRepository {
   }
 
   Future<List<Product>> get products async =>
-      _cache.read<List<Product>>(key: productsListKey) ?? await getProducts();
+      _cache.read<List<Product>>(key: productsListKey) ?? await _getProducts();
 
-  Future<void> updateProductInDatabase({required Product product}) async {
+  Future<void> _updateProductInDatabase({required Product product}) async {
     await _firebaseFirestore
         .collection(_productCollectionPath(userId: _userId))
         .doc(product.id)
@@ -49,10 +49,18 @@ class ProductRepository {
 
   Future<void> updateProduct({required Product product}) async {
     try {
-      await updateProductInDatabase(product: product);
+      await _updateProductInDatabase(product: product);
 
       final list = await products;
-      list[list.indexWhere((element) => element.id == product.id)] = product;
+
+      final id = list.indexWhere((element) => element.id == product.id);
+
+      if (id == -1) {
+        list.add(product);
+      } else {
+        list[id] = product;
+      }
+
       _cache.write(key: productsListKey, value: list);
     } catch (e) {
       log('Error => ProductRepository -> updateProduct {${e.toString()}}');
@@ -63,5 +71,25 @@ class ProductRepository {
     final list = await products;
     final product = list.firstWhere((element) => element.id == id);
     return product;
+  }
+
+  Future<int> getProductQuantity({required String id}) async {
+    final product = await getProductOfId(id: id);
+    return product.quantity;
+  }
+
+  Future<void> updateProductQuantity({
+    required String id,
+    required int quantity,
+    bool isActive = true,
+  }) async {
+    try {
+      final product = await getProductOfId(id: id);
+      final newProduct =
+          product.copyWith(quantity: quantity, isActive: isActive);
+      await updateProduct(product: newProduct);
+    } catch (e) {
+      log('Error => ProductRepository -> updateProductQuantity {${e.toString()}}');
+    }
   }
 }

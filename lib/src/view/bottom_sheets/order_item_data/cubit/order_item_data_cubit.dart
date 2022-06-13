@@ -9,11 +9,14 @@ part 'order_item_data_state.dart';
 
 class OrderItemDataCubit extends Cubit<OrderItemDataState> {
   final OrderItem item;
+  final int maxQuantity;
 
-  OrderItemDataCubit({required this.item})
-      : super(const OrderItemDataState());
+  OrderItemDataCubit({
+    required this.item,
+    required this.maxQuantity,
+  }) : super(const OrderItemDataState());
 
-  void init() {
+  void init() async {
     final price = Price.dirty(item.price);
     final quantity = Quantity.dirty(item.quantity);
 

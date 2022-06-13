@@ -5,7 +5,7 @@ class OrderItem {
   final String productImage;
   final String productName;
   final int quantity;
-  final int maxQuantity;
+
   final double price;
 
   OrderItem({
@@ -13,7 +13,6 @@ class OrderItem {
     required this.productImage,
     required this.productName,
     required this.quantity,
-    required this.maxQuantity,
     required this.price,
   });
 
@@ -30,7 +29,6 @@ class OrderItem {
       productImage: productImage ?? this.productImage,
       productName: productName ?? this.productName,
       quantity: quantity ?? this.quantity,
-      maxQuantity: maxQuantity ?? this.maxQuantity,
       price: price ?? this.price,
     );
   }
@@ -41,7 +39,6 @@ class OrderItem {
       'productImage': productImage,
       'productName': productName,
       'quantity': quantity,
-      'maxQuantity': maxQuantity,
       'price': price,
     };
   }
@@ -52,7 +49,6 @@ class OrderItem {
       productImage: map['productImage'] ?? '',
       productName: map['productName'] ?? '',
       quantity: map['quantity']?.toInt() ?? 0,
-      maxQuantity: map['maxQuantity']?.toInt() ?? 0,
       price: map['price']?.toDouble() ?? 0.0,
     );
   }
@@ -64,7 +60,7 @@ class OrderItem {
 
   @override
   String toString() {
-    return 'OrderItem(productId: $productId, productImage: $productImage, productName: $productName, quantity: $quantity, maxQuantity: $maxQuantity, price: $price)';
+    return 'OrderItem(productId: $productId, productImage: $productImage, productName: $productName, quantity: $quantity, price: $price)';
   }
 
   @override
@@ -76,7 +72,6 @@ class OrderItem {
       other.productImage == productImage &&
       other.productName == productName &&
       other.quantity == quantity &&
-      other.maxQuantity == maxQuantity &&
       other.price == price;
   }
 
@@ -86,7 +81,6 @@ class OrderItem {
       productImage.hashCode ^
       productName.hashCode ^
       quantity.hashCode ^
-      maxQuantity.hashCode ^
       price.hashCode;
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +43,7 @@ class SynchronizationCubit extends Cubit<SynchronizationState> {
   Future<void> loadProducts() async {
     emit(state.copyWith(status: SynchronizationStatus.productsLoading));
     try {
-      final products = await _productRepository.getProducts();
+      final products = await _productRepository.products;
       emit(
         state.copyWith(
           products: products,
@@ -80,11 +79,13 @@ class SynchronizationCubit extends Cubit<SynchronizationState> {
       if (product != null) {
         if (product.name != offer.name ||
             product.allegroPrice != offer.price ||
-            product.quantity != offer.available) {
+            product.quantity != offer.available ||
+            product.isActive != offer.status) {
           product = product.copyWith(
             name: offer.name,
             allegroPrice: offer.price,
             quantity: offer.available,
+            isActive: offer.status,
           );
           list.add(product);
         }
@@ -94,6 +95,7 @@ class SynchronizationCubit extends Cubit<SynchronizationState> {
             id: generateCustomId(),
             allegroId: offer.id,
             name: offer.name,
+            isActive: offer.status,
             allegroPrice: offer.price,
             quantity: offer.available,
             imageUrl: offer.primaryImage,
@@ -120,7 +122,7 @@ class SynchronizationCubit extends Cubit<SynchronizationState> {
             index: i + 1,
           ),
         );
-        _productRepository.updateProductInDatabase(product: product);
+        _productRepository.updateProduct(product: product);
       }
       emit(state.copyWith(status: SynchronizationStatus.completed));
     } catch (e) {

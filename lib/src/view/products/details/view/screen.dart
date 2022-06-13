@@ -23,29 +23,35 @@ class ProductDetailsScreen extends StatelessWidget {
             return true;
           },
           child: Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                final item = await context.showBottomSheet<OrderItem>(
-                  builder: (context) => OrderItemDataBottomSheet(
-                    item: OrderItem(
-                      productId: state.product.id,
-                      productImage: state.product.imageUrl,
-                      productName: state.product.name,
-                      quantity: 1,
-                      maxQuantity: state.product.quantity,
-                      price: state.product.allegroPrice,
-                    ),
-                  ),
-                );
+            floatingActionButton: BlocBuilder<DetailsCubit, DetailsState>(
+              builder: (context, state) {
+                return state.product.isActive
+                    ? FloatingActionButton(
+                        onPressed: () async {
+                          final item = await context.showBottomSheet<OrderItem>(
+                            builder: (context) => OrderItemDataBottomSheet(
+                              item: OrderItem(
+                                productId: state.product.id,
+                                productImage: state.product.imageUrl,
+                                productName: state.product.name,
+                                quantity: 1,
+                                price: state.product.allegroPrice,
+                              ),
+                              maxQuantity: state.product.quantity,
+                            ),
+                          );
 
-                if (item != null) {
-                  if (item.quantity != 0) {
-                    // ignore: use_build_context_synchronously
-                    context.read<NewOrderCubit>().addItem(item: item);
-                  }
-                }
+                          if (item != null) {
+                            if (item.quantity != 0) {
+                              // ignore: use_build_context_synchronously
+                              context.read<NewOrderCubit>().addItem(item: item);
+                            }
+                          }
+                        },
+                        child: const Icon(Icons.shopping_bag_rounded),
+                      )
+                    : Container();
               },
-              child: const Icon(Icons.shopping_bag_rounded),
             ),
             appBar: AppBar(
               title: BlocBuilder<DetailsCubit, DetailsState>(
@@ -59,21 +65,23 @@ class ProductDetailsScreen extends StatelessWidget {
               actions: [
                 BlocBuilder<DetailsCubit, DetailsState>(
                   builder: (context, state) {
-                    return IconButton(
-                      onPressed: () async {
-                        final value = await Navigator.push<Product>(
-                          context,
-                          ProductEditPage.route(product: state.product),
-                        );
-                        if (value != null) {
-                          // ignore: use_build_context_synchronously
-                          context
-                              .read<DetailsCubit>()
-                              .updateProduct(product: value);
-                        }
-                      },
-                      icon: const Icon(Icons.edit),
-                    );
+                    return state.product.isActive
+                        ? IconButton(
+                            onPressed: () async {
+                              final value = await Navigator.push<Product>(
+                                context,
+                                ProductEditPage.route(product: state.product),
+                              );
+                              if (value != null) {
+                                // ignore: use_build_context_synchronously
+                                context
+                                    .read<DetailsCubit>()
+                                    .updateProduct(product: value);
+                              }
+                            },
+                            icon: const Icon(Icons.edit),
+                          )
+                        : Container();
                   },
                 ),
               ],
@@ -194,31 +202,34 @@ class ProductDetailsScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(context.paddingMedium),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Quantity:'),
-                              const SizedBox(width: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    '${product.quantity}',
-                                    style: context.labelLarge,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'szt',
-                                    style: context.labelMedium,
-                                  ),
-                                ],
+                      product.isActive
+                          ? Card(
+                              child: Padding(
+                                padding: EdgeInsets.all(context.paddingMedium),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('Quantity:'),
+                                    const SizedBox(width: 4),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          '${product.quantity}',
+                                          style: context.labelLarge,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'szt',
+                                          style: context.labelMedium,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
+                            )
+                          : Container(),
                     ],
                   ),
                 );

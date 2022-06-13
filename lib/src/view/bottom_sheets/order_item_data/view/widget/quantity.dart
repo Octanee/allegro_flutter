@@ -15,7 +15,7 @@ class QuantityCard extends StatelessWidget {
         return AddSubtractCard(
           title: 'Quantity',
           value: state.quantity.value,
-          maxValue: context.read<OrderItemDataCubit>().item.maxQuantity,
+          maxValue: context.read<OrderItemDataCubit>().maxQuantity,
           onSubtract: () {
             context
                 .read<OrderItemDataCubit>()
@@ -30,7 +30,7 @@ class QuantityCard extends StatelessWidget {
             await showInputDialog(
               context: context,
               initValue: state.quantity.value,
-              maxValue: context.read<OrderItemDataCubit>().item.maxQuantity,
+              maxValue: context.read<OrderItemDataCubit>().maxQuantity,
             );
           },
         );

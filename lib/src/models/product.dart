@@ -8,6 +8,7 @@ class Product {
   final double allegroPrice;
   final String imageUrl;
   final int quantity;
+  final bool isActive;
 
   Product({
     required this.id,
@@ -16,6 +17,7 @@ class Product {
     required this.allegroPrice,
     required this.quantity,
     required this.imageUrl,
+    required this.isActive,
     this.purchasePrice,
   });
 
@@ -27,10 +29,12 @@ class Product {
     double? allegroPrice,
     String? imageUrl,
     int? quantity,
+    bool? isActive,
   }) {
     return Product(
       id: id ?? this.id,
       allegroId: allegroId ?? this.allegroId,
+      isActive: isActive ?? this.isActive,
       name: name ?? this.name,
       purchasePrice: purchasePrice ?? this.purchasePrice,
       allegroPrice: allegroPrice ?? this.allegroPrice,
@@ -61,6 +65,7 @@ class Product {
       'allegroPrice': allegroPrice,
       'quantity': quantity,
       'imageUrl': imageUrl,
+      'isActive': isActive,
     };
   }
 
@@ -68,6 +73,7 @@ class Product {
     return Product(
       id: map['id'],
       allegroId: map['allegroId'],
+      isActive: map['isActive'],
       name: map['name'],
       imageUrl: map['imageUrl'],
       purchasePrice: map['purchasePrice']?.toDouble(),
@@ -83,7 +89,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, allegroId: $allegroId, name: $name, purchasePrice: $purchasePrice, allegroPrice: $allegroPrice, quantity: $quantity)';
+    return 'Product(id: $id, allegroId: $allegroId, isActive: $isActive,+ name: $name, purchasePrice: $purchasePrice, allegroPrice: $allegroPrice, quantity: $quantity)';
   }
 
   @override
@@ -93,6 +99,7 @@ class Product {
     return other is Product &&
         other.id == id &&
         other.allegroId == allegroId &&
+        other.isActive == isActive &&
         other.name == name &&
         other.purchasePrice == purchasePrice &&
         other.allegroPrice == allegroPrice &&
@@ -104,6 +111,7 @@ class Product {
   int get hashCode {
     return id.hashCode ^
         allegroId.hashCode ^
+        isActive.hashCode ^
         name.hashCode ^
         purchasePrice.hashCode ^
         allegroPrice.hashCode ^

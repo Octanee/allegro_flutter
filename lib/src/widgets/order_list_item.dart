@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../extensions/extension.dart';
 import '../models/models.dart';
+import '../repository/authentication.dart';
+import '../repository/product.dart';
 import '../view/bottom_sheets/order_item_data/view/view.dart';
 import 'widgets.dart';
 
@@ -78,9 +81,17 @@ class OrderListItem extends StatelessWidget {
   }
 
   Future<void> _onTapItem(BuildContext context) async {
+    final maxQuantity = await ProductRepository(
+      userId: context.read<AuthenticationRepository>().currentUserId,
+    ).getProductQuantity(id: order.productId);
+
+    // ignore: use_build_context_synchronously
     var item = await context.showBottomSheet<OrderItem>(
-      builder: (context) =>
-          OrderItemDataBottomSheet(item: order, saveButtonText: 'Edit'),
+      builder: (context) => OrderItemDataBottomSheet(
+        item: order,
+        saveButtonText: 'Edit',
+        maxQuantity: maxQuantity,
+      ),
     );
 
     if (item != null) {

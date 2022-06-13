@@ -28,6 +28,11 @@ class NewOrderState extends Equatable {
   });
 
   @override
+  String toString() {
+    return 'NewOrderState(items: ${items.length}, deliverer: $deliverer, status: $status, platform: $platform, name: $name, email: $email, phone: $phone, address: $address, formzStatus: $formzStatus, errorMessage: $errorMessage)';
+  }
+
+  @override
   List<Object> get props => [
         items,
         deliverer,

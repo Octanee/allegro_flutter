@@ -7,6 +7,7 @@ class AllegroOffer {
   final double price;
   final int available;
   final String primaryImage;
+  final bool status;
 
   AllegroOffer({
     required this.id,
@@ -15,6 +16,7 @@ class AllegroOffer {
     required this.price,
     required this.available,
     required this.primaryImage,
+    required this.status,
   });
 
   AllegroOffer copyWith({
@@ -24,6 +26,7 @@ class AllegroOffer {
     double? price,
     int? available,
     String? primaryImage,
+    bool? status,
   }) {
     return AllegroOffer(
       id: id ?? this.id,
@@ -32,6 +35,7 @@ class AllegroOffer {
       price: price ?? this.price,
       available: available ?? this.available,
       primaryImage: primaryImage ?? this.primaryImage,
+      status: status ?? this.status,
     );
   }
 
@@ -43,6 +47,7 @@ class AllegroOffer {
       'price': price,
       'available': available,
       'primaryImage': primaryImage,
+      'status': status
     };
   }
 
@@ -58,7 +63,8 @@ class AllegroOffer {
       },
       'stock': {
         'available': available,
-      }
+      },
+      'publication': {'status': status ? 'ACTIVE' : 'INACTIVE'},
     };
   }
 
@@ -70,6 +76,7 @@ class AllegroOffer {
       price: double.parse(map['sellingMode']['price']['amount']),
       available: map['stock']['available']?.toInt(),
       primaryImage: map['primaryImage']['url'],
+      status: map['publication']['status'] == 'ACTIVE',
     );
   }
 
@@ -80,7 +87,7 @@ class AllegroOffer {
 
   @override
   String toString() {
-    return 'AllegroOffer(id: $id, name: $name, categoryId: $categoryId, price: $price, available: $available)';
+    return 'AllegroOffer(id: $id, name: $name, status: $status categoryId: $categoryId, price: $price, available: $available)';
   }
 
   @override
@@ -90,6 +97,7 @@ class AllegroOffer {
     return other is AllegroOffer &&
         other.id == id &&
         other.name == name &&
+        other.status == status &&
         other.categoryId == categoryId &&
         other.price == price &&
         other.available == available &&
@@ -100,6 +108,7 @@ class AllegroOffer {
   int get hashCode {
     return id.hashCode ^
         name.hashCode ^
+        status.hashCode ^
         categoryId.hashCode ^
         price.hashCode ^
         available.hashCode ^

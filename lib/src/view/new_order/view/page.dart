@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../new_order.dart';
 
@@ -9,6 +10,7 @@ class NewOrderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NewOrderScreen();
+    context.read<NewOrderCubit>().reset();
+    return const NewOrderScreen();
   }
 }

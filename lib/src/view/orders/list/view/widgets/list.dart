@@ -11,6 +11,9 @@ class OrdersList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    orders.sort(
+      (a, b) => a.lastUpdate.compareTo(b.lastUpdate),
+    );
     return orders.isNotEmpty ? _getList() : _getEmptyList(context);
   }
 
