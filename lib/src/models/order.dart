@@ -13,7 +13,7 @@ class Order {
   final OrderStatus status;
   final OrderPlatform platform;
   final double price;
-  final Customer? customer;
+  final Customer customer;
 
   Order({
     required this.id,
@@ -23,8 +23,8 @@ class Order {
     required this.deliverer,
     required this.status,
     required this.platform,
+    required this.customer,
     this.price = 0,
-    this.customer,
   });
 
   Order copyWith({

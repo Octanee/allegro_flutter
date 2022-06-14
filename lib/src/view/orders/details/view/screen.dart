@@ -11,7 +11,12 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DetailsCubit, DetailsState>(
+    return BlocConsumer<DetailsCubit, DetailsState>(
+      listener: (context, state) {
+        if (state.status == DetailsStatus.error) {
+          context.showSnackBar(message: state.errorMessage ?? 'Error');
+        }
+      },
       buildWhen: (previous, current) => previous.updated != current.updated,
       builder: (context, state) {
         return WillPopScope(
@@ -32,18 +37,33 @@ class OrderDetailsScreen extends StatelessWidget {
                   );
                 },
               ),
-              // actions: [
-              //   IconButton(
-              //     icon: const Icon(Icons.edit),
-              //     onPressed: () async {
-              //       final value = await Navigator.push<Order>(context, route);
-              //       if (value != null) {
-              //         // ignore: use_build_context_synchronously
-              //         context.read<DetailsCubit>().updateOrder(order: value);
-              //       }
-              //     },
-              //   ),
-              // ],
+              actions: [
+                BlocBuilder<DetailsCubit, DetailsState>(
+                  builder: (context, state) {
+                    if (state.status == DetailsStatus.generateInvoice) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return IconButton(
+                      icon: const Icon(Icons.receipt_long_rounded),
+                      onPressed: () async {
+                        context.read<DetailsCubit>().generateInvoice();
+                      },
+                    );
+                  },
+                ),
+                // IconButton(
+                //   icon: const Icon(Icons.edit),
+                //   onPressed: () async {
+                //     final value = await Navigator.push<Order>(context, route);
+                //     if (value != null) {
+                //       // ignore: use_build_context_synchronously
+                //       context.read<DetailsCubit>().updateOrder(order: value);
+                //     }
+                //   },
+                // ),
+              ],
             ),
             body: SingleChildScrollView(
               child: Column(

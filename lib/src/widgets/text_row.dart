@@ -6,10 +6,12 @@ class TextRow extends StatelessWidget {
   final String name;
   final String value;
   final bool isPrice;
+  final MainAxisAlignment alignment;
 
   const TextRow({
     required this.name,
     required this.value,
+    this.alignment = MainAxisAlignment.spaceBetween,
     this.isPrice = false,
     Key? key,
   }) : super(key: key);
@@ -17,7 +19,7 @@ class TextRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: alignment,
       children: [
         Flexible(child: Text('$name:')),
         Flexible(
