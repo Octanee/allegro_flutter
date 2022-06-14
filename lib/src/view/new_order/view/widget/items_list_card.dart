@@ -22,7 +22,13 @@ class ItemsListCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Items'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Items'),
+                    Text('${state.price.toPrice()} PLN'),
+                  ],
+                ),
                 _getList(context: context, list: state.items),
                 _getButton(context: context),
               ],

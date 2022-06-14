@@ -13,7 +13,7 @@ class ListCubit extends Cubit<ListState> {
       : _ordersRepository = ordersRepository,
         super(const ListState());
 
-  void loadProducts() async {
+  void loadOrders() async {
     try {
       emit(state.copyWith(status: ListStatus.loading));
 

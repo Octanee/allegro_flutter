@@ -5,6 +5,7 @@ class NewOrderState extends Equatable {
   final OrderDeliverer deliverer;
   final OrderStatus status;
   final OrderPlatform platform;
+  final double price;
 
   final TextInput name;
   final Email email;
@@ -24,12 +25,13 @@ class NewOrderState extends Equatable {
     this.phone = const Phone.pure(),
     this.address = const TextInput.pure(),
     this.formzStatus = FormzStatus.pure,
+    this.price = 0,
     this.errorMessage,
   });
 
   @override
   String toString() {
-    return 'NewOrderState(items: ${items.length}, deliverer: $deliverer, status: $status, platform: $platform, name: $name, email: $email, phone: $phone, address: $address, formzStatus: $formzStatus, errorMessage: $errorMessage)';
+    return 'NewOrderState(items: ${items.length}, price: $price, deliverer: $deliverer, status: $status, platform: $platform, name: $name, email: $email, phone: $phone, address: $address, formzStatus: $formzStatus, errorMessage: $errorMessage)';
   }
 
   @override
@@ -43,6 +45,7 @@ class NewOrderState extends Equatable {
         phone,
         address,
         formzStatus,
+        price,
       ];
 
   NewOrderState copyWith({
@@ -56,6 +59,7 @@ class NewOrderState extends Equatable {
     TextInput? address,
     FormzStatus? formzStatus,
     String? errorMessage,
+    double? price,
   }) {
     return NewOrderState(
       items: items ?? this.items,
@@ -68,6 +72,7 @@ class NewOrderState extends Equatable {
       address: address ?? this.address,
       formzStatus: formzStatus ?? this.formzStatus,
       errorMessage: errorMessage ?? this.errorMessage,
+      price: price ?? this.price,
     );
   }
 }

@@ -11,10 +11,12 @@ import 'widgets.dart';
 class OrderListItem extends StatelessWidget {
   final OrderItem order;
   final void Function(OrderItem) onTap;
+  final bool edit;
 
   const OrderListItem({
     required this.order,
     required this.onTap,
+    this.edit = true,
     Key? key,
   }) : super(key: key);
 
@@ -23,9 +25,11 @@ class OrderListItem extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(context.paddingSmall),
       child: InkWell(
-        onTap: () async {
-          await _onTapItem(context);
-        },
+        onTap: edit
+            ? () async {
+                await _onTapItem(context);
+              }
+            : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -70,9 +74,12 @@ class OrderListItem extends StatelessWidget {
               ],
             ),
             SizedBox(width: context.paddingMedium),
-            Icon(
-              Icons.edit,
-              color: context.colors.primary,
+            Visibility(
+              visible: edit,
+              child: Icon(
+                Icons.edit,
+                color: context.colors.primary,
+              ),
             ),
           ],
         ),

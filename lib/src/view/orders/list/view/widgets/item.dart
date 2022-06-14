@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../extensions/extension.dart';
 import '../../../../../models/models.dart';
 import '../../../../../widgets/widgets.dart';
+import '../../../details/view/page.dart';
+import '../../list.dart';
 
 class OrderListItem extends StatelessWidget {
   final Order order;
@@ -11,7 +14,16 @@ class OrderListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClickableCard(
-      onTap: () {},
+      onTap: () async {
+        final updated = await Navigator.push<bool>(
+          context,
+          OrderDetailsPage.route(order: order),
+        );
+        if (updated != null && updated) {
+          // ignore: use_build_context_synchronously
+          context.read<ListCubit>().loadOrders();
+        }
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

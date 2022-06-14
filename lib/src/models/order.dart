@@ -12,6 +12,7 @@ class Order {
   final OrderDeliverer deliverer;
   final OrderStatus status;
   final OrderPlatform platform;
+  final double price;
   final Customer? customer;
 
   Order({
@@ -22,6 +23,7 @@ class Order {
     required this.deliverer,
     required this.status,
     required this.platform,
+    this.price = 0,
     this.customer,
   });
 
@@ -34,6 +36,7 @@ class Order {
     OrderStatus? status,
     OrderPlatform? platform,
     Customer? customer,
+    double? price,
   }) {
     return Order(
       id: id ?? this.id,
@@ -44,6 +47,7 @@ class Order {
       status: status ?? this.status,
       platform: platform ?? this.platform,
       customer: customer ?? this.customer,
+      price: price ?? this.price,
     );
   }
 
@@ -57,6 +61,7 @@ class Order {
       'status': status.toString(),
       'platform': platform.toString(),
       'customer': customer?.toMap(),
+      'price': price,
     };
   }
 
@@ -71,6 +76,7 @@ class Order {
       status: OrderStatus.fromString(map['status']),
       platform: OrderPlatform.fromString(map['platform']),
       customer: Customer.fromMap(map['customer']),
+      price: map['price'],
     );
   }
 
@@ -80,7 +86,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, items: $items, occurredAt: $occurredAt, lastUpdate: $lastUpdate, deliverer: $deliverer, status: $status, platform: $platform, customer: $customer)';
+    return 'Order(id: $id, items: $items, price: $price, occurredAt: $occurredAt, lastUpdate: $lastUpdate, deliverer: $deliverer, status: $status, platform: $platform, customer: $customer)';
   }
 
   @override
@@ -95,6 +101,7 @@ class Order {
         other.deliverer == deliverer &&
         other.platform == platform &&
         other.customer == customer &&
+        other.price == price &&
         other.status == status;
   }
 
@@ -102,6 +109,7 @@ class Order {
   int get hashCode {
     return id.hashCode ^
         items.hashCode ^
+        price.hashCode ^
         occurredAt.hashCode ^
         lastUpdate.hashCode ^
         deliverer.hashCode ^
@@ -142,8 +150,11 @@ enum OrderPlatform {
 }
 
 enum OrderDeliverer {
-  inpost,
-  inpostLocker;
+  inpost(price: 16.5),
+  inpostLocker(price: 14.5);
+
+  final double price;
+  const OrderDeliverer({required this.price});
 
   @override
   String toString() {

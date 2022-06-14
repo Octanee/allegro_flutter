@@ -65,23 +65,24 @@ class ProductDetailsScreen extends StatelessWidget {
               actions: [
                 BlocBuilder<DetailsCubit, DetailsState>(
                   builder: (context, state) {
-                    return state.product.isActive
-                        ? IconButton(
-                            onPressed: () async {
-                              final value = await Navigator.push<Product>(
-                                context,
-                                ProductEditPage.route(product: state.product),
-                              );
-                              if (value != null) {
-                                // ignore: use_build_context_synchronously
-                                context
-                                    .read<DetailsCubit>()
-                                    .updateProduct(product: value);
-                              }
-                            },
-                            icon: const Icon(Icons.edit),
-                          )
-                        : Container();
+                    return Visibility(
+                      visible: state.product.isActive,
+                      child: IconButton(
+                        onPressed: () async {
+                          final value = await Navigator.push<Product>(
+                            context,
+                            ProductEditPage.route(product: state.product),
+                          );
+                          if (value != null) {
+                            // ignore: use_build_context_synchronously
+                            context
+                                .read<DetailsCubit>()
+                                .updateProduct(product: value);
+                          }
+                        },
+                        icon: const Icon(Icons.edit),
+                      ),
+                    );
                   },
                 ),
               ],

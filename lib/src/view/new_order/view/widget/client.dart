@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'widget.dart';
 
-
 class ClientCard extends StatelessWidget {
   const ClientCard({Key? key}) : super(key: key);
 

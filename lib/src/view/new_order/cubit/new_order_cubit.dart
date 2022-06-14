@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import '../../../extensions/extension.dart';
 import '../../../input/input.dart';
 import '../../../input/phone.dart';
 import '../../../models/models.dart';
@@ -27,7 +30,9 @@ class NewOrderCubit extends Cubit<NewOrderState> {
   void addItem({required OrderItem item}) {
     final list = List<OrderItem>.from(state.items);
     list.add(item);
-    emit(state.copyWith(items: list));
+
+    final price = _calculatePrice(list);
+    emit(state.copyWith(items: list, price: price));
   }
 
   void updateItem({required OrderItem item}) {
@@ -38,7 +43,20 @@ class NewOrderCubit extends Cubit<NewOrderState> {
       list[list.indexWhere((element) => element.productId == item.productId)] =
           item;
     }
-    emit(state.copyWith(items: list));
+
+    final price = _calculatePrice(list);
+    emit(state.copyWith(items: list, price: price));
+  }
+
+  double _calculatePrice(List<OrderItem> list) {
+    final price = list
+        .fold<double>(
+          0,
+          (previous, element) => previous + (element.price * element.quantity),
+        )
+        .toPrice();
+    log('NewOrderCubit => _calculatePrice { price: $price }');
+    return price;
   }
 
   void delivererChange(OrderDeliverer deliverer) {
@@ -147,7 +165,7 @@ class NewOrderCubit extends Cubit<NewOrderState> {
   }
 
   void reset() {
-    emit(NewOrderState(items: state.items));
+    emit(NewOrderState(items: state.items, price: state.price));
   }
 
   Order _getOrder() {
@@ -160,6 +178,7 @@ class NewOrderCubit extends Cubit<NewOrderState> {
       status: state.status,
       platform: state.platform,
       customer: _getCustomer(),
+      price: state.price,
     );
   }
 

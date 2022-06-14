@@ -17,7 +17,7 @@ class OrdersListPage extends StatelessWidget {
         ordersRepository: OrdersRepository(
           userId: context.read<AuthenticationRepository>().currentUserId,
         ),
-      )..loadProducts(),
+      )..loadOrders(),
       child: const OrdersListScreen(),
     );
   }
