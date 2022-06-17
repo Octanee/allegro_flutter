@@ -5,3 +5,4 @@ export 'name.dart';
 export 'text_input.dart';
 export 'price.dart';
 export 'quantity.dart';
+export 'phone.dart';

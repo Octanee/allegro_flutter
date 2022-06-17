@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -29,6 +30,7 @@ class InvoiceGenerator {
 
   Future<File> _savePdfFile(String fileName, Uint8List byteList) async {
     final output = await getTemporaryDirectory();
+    log('Output: $output');
     var filePath = '${output.path}/$fileName.pdf';
     final file = File(filePath);
     await file.writeAsBytes(byteList);

@@ -60,7 +60,7 @@ class Order {
       'deliverer': deliverer.toString(),
       'status': status.toString(),
       'platform': platform.toString(),
-      'customer': customer?.toMap(),
+      'customer': customer.toMap(),
       'price': price,
     };
   }

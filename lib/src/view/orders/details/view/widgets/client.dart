@@ -14,7 +14,7 @@ class ClientCard extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.order.customer != current.order.customer,
       builder: (context, state) {
-        final customer = state.order.customer!;
+        final customer = state.order.customer;
         return Card(
           child: Padding(
             padding: EdgeInsets.all(context.paddingMedium),
