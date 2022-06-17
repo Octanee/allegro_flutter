@@ -5,8 +5,8 @@ import '../../../../../extensions/extension.dart';
 import '../../../../../widgets/widgets.dart';
 import '../../../orders.dart';
 
-class OrderStatus extends StatelessWidget {
-  const OrderStatus({Key? key}) : super(key: key);
+class OrderStatusWidget extends StatelessWidget {
+  const OrderStatusWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

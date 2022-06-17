@@ -1,8 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../extensions/extension.dart';
+import '../../../../models/models.dart';
+import '../../edit/edit.dart';
 import '../../orders.dart';
 import 'widgets/widgets.dart';
 
@@ -53,22 +54,25 @@ class OrderDetailsScreen extends StatelessWidget {
                     );
                   },
                 ),
-                // IconButton(
-                //   icon: const Icon(Icons.edit),
-                //   onPressed: () async {
-                //     final value = await Navigator.push<Order>(context, route);
-                //     if (value != null) {
-                //       // ignore: use_build_context_synchronously
-                //       context.read<DetailsCubit>().updateOrder(order: value);
-                //     }
-                //   },
-                // ),
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () async {
+                    final value = await Navigator.push<Order>(
+                      context,
+                      OrderEditPage.route(order: state.order),
+                    );
+                    if (value != null) {
+                      // ignore: use_build_context_synchronously
+                      context.read<DetailsCubit>().updateOrder(order: value);
+                    }
+                  },
+                ),
               ],
             ),
             body: SingleChildScrollView(
               child: Column(
                 children: const [
-                  OrderStatus(),
+                  OrderStatusWidget(),
                   OrderDetailsData(),
                   ClientCard(),
                   ItemsListCard(),
