@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
+import '../../../../exceptions/exceptions.dart';
 import '../../../../extensions/extension.dart';
 import '../../../../input/input.dart';
 import '../../../../models/models.dart';
@@ -137,5 +138,31 @@ class EditCubit extends Cubit<EditState> {
         ),
       ),
     );
+  }
+
+  Future<void> updateOrder() async {
+    try {
+      if (!state.formzStatus.isValidated) return;
+      emit(state.copyWith(formzStatus: FormzStatus.submissionInProgress));
+
+
+      // TODO Update Order
+      final order = state.order.copyWith();
+
+      emit(
+        state.copyWith(
+          order: order,
+          formzStatus: FormzStatus.submissionSuccess,
+        ),
+      );
+    } on AllegroApiException catch (e) {
+      log('$runtimeType => $e');
+      emit(
+        state.copyWith(
+          formzStatus: FormzStatus.submissionFailure,
+          errorMessage: e.message,
+        ),
+      );
+    }
   }
 }

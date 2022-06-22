@@ -16,7 +16,7 @@ class OrderEditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => EditCubit(order: _order),
+      create: (_) => EditCubit(order: _order)..init(),
       child: const OrderEditScreen(),
     );
   }
